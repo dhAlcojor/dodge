@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://art/Scuba diver.png" type="Texture" id=1]
 [ext_resource path="res://art/Scuba diver animation.png" type="Texture" id=2]
+[ext_resource path="res://Trail.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Player.gd" type="Script" id=5]
 
 [sub_resource type="AtlasTexture" id=1]
@@ -55,4 +56,6 @@ animation = "up"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0.176777, 3.71231 )
 shape = SubResource( 6 )
+
+[node name="Trail" parent="." instance=ExtResource( 3 )]
 [connection signal="body_entered" from="." to="." method="_on_Player_body_entered"]
