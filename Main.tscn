@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Mob.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://HUD.tscn" type="PackedScene" id=4]
 [ext_resource path="res://art/House In a Forest Loop.ogg" type="AudioStream" id=5]
 [ext_resource path="res://art/gameover.wav" type="AudioStream" id=6]
+[ext_resource path="res://art/bg.png" type="Texture" id=7]
 
 [sub_resource type="Curve2D" id=1]
 _data = {
@@ -16,13 +17,9 @@ _data = {
 script = ExtResource( 1 )
 Mob = ExtResource( 2 )
 
-[node name="ColorRect" type="ColorRect" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color( 0, 0.360784, 0.678431, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="bg" type="Sprite" parent="."]
+texture = ExtResource( 7 )
+centered = false
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 

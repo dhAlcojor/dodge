@@ -2,28 +2,38 @@ extends Node
 
 export (PackedScene) var Mob
 var score
+var game_started = false
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
   randomize()
+  new_game()
+
+
+func _input(event: InputEvent) -> void:
+  if event is InputEventScreenTouch and event.is_pressed() and !game_started:
+    new_game()
 
 
 func game_over():
   $ScoreTimer.stop()
   $MobTimer.stop()
-  $HUD.show_game_over()
-  get_tree().call_group("mobs", "queue_free")
+  yield($HUD.show_game_over(), 'completed')
+  get_tree().call_group('mobs', 'queue_free')
   $Music.stop()
   $DeathSound.play()
+  game_started = false
 
 
 func new_game():
   score = 0
   $Player.start($StartPosition.position)
   $StartTimer.start()
+  game_started = true
   $HUD.update_score(score)
-  $HUD.show_message("Get Ready")
+  $HUD.hideInstructions()
+  $HUD.show_message('Get Ready')
   $Music.play()
 
 
@@ -51,5 +61,5 @@ func _on_ScoreTimer_timeout():
 
 
 func _on_StartTimer_timeout():
-  #$MobTimer.start()
+  $MobTimer.start()
   $ScoreTimer.start()
