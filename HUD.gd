@@ -1,20 +1,8 @@
 extends CanvasLayer
 
-signal start_game
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-  pass # Replace with function body.
-
 
 func _on_MessageTimer_timeout() -> void:
   $Message.hide()
-
-
-#func _on_StartButton_pressed() -> void:
-  #$StartButton.hide()
-  #emit_signal('start_game')
 
 
 func show_message(text):
@@ -39,5 +27,29 @@ func update_score(score):
   $ScoreLabel.text = str(score)
 
 
-func hideInstructions():
+func hide_instructions():
   $Instructions.hide()
+
+
+func show_high_scores(high_scores: Array):
+  var high_scores_text = ''
+  for score in high_scores:
+    high_scores_text += str(score) + "\n"
+
+  $HighScoresLabel.text = high_scores_text
+
+  $HighScoresTitle.show()
+  $HighScoresLabel.show()
+
+
+func hide_high_scores():
+  $HighScoresTitle.hide()
+  $HighScoresLabel.hide()
+
+
+func hide_score():
+  $ScoreLabel.hide()
+
+
+func show_score():
+  $ScoreLabel.show()

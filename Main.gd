@@ -3,10 +3,12 @@ extends Node
 export (PackedScene) var Mob
 var score
 var game_started = false
+var high_scores = []
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+  load_high_scores()
   randomize()
   new_game()
 
@@ -17,10 +19,13 @@ func _input(event: InputEvent) -> void:
 
 
 func game_over():
+  save_high_scores()
+  $HUD.hide_score()
+  $HUD.show_high_scores(high_scores)
   $ScoreTimer.stop()
   $MobTimer.stop()
-  yield($HUD.show_game_over(), 'completed')
-  get_tree().call_group('mobs', 'queue_free')
+  yield($HUD.show_game_over(), 'completed') # Wait until show_game_over() has finished
+  get_tree().call_group('mobs', 'queue_free') # Remove all enemies
   $Music.stop()
   $DeathSound.play()
   game_started = false
@@ -28,11 +33,13 @@ func game_over():
 
 func new_game():
   score = 0
+  $HUD.show_score()
   $Player.start($StartPosition.position)
   $StartTimer.start()
   game_started = true
   $HUD.update_score(score)
-  $HUD.hideInstructions()
+  $HUD.hide_instructions()
+  $HUD.hide_high_scores()
   $HUD.show_message('Get Ready')
   $Music.play()
 
@@ -63,3 +70,35 @@ func _on_ScoreTimer_timeout():
 func _on_StartTimer_timeout():
   $MobTimer.start()
   $ScoreTimer.start()
+
+
+func save_high_scores():
+  print('high scores before:', high_scores, score)
+  if high_scores.has(score): # If the new score is already a high score, do nothing
+    return
+
+  high_scores.append(score)
+  high_scores.sort()
+  high_scores.invert()
+
+  # We're only storing the top 3 scores, for now
+  if high_scores.size() > 3:
+    high_scores.pop_back()
+
+  print('high scores after: ', high_scores)
+
+  var save_game = File.new()
+  save_game.open('user://savegame.save', File.WRITE)
+  save_game.store_line(to_json(high_scores))
+  save_game.close()
+
+func load_high_scores():
+  var save_game = File.new()
+  save_game.open('user://savegame.save', File.READ)
+  high_scores = parse_json(save_game.get_line())
+  if high_scores == null:
+    high_scores = []
+
+  print('high scores: ', high_scores)
+
+  save_game.close()
