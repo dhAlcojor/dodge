@@ -17,7 +17,8 @@ _global_script_class_icons={
 
 config/name="Scuba Danger"
 run/main_scene="res://SplashScene.tscn"
-config/icon="res://icon.png"
+config/icon="res://ScubaDanger.png"
+config/windows_native_icon="res://ScubaDanger.ico"
 config/Version="1.0.0"
 
 [display]
