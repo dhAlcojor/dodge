@@ -4,7 +4,7 @@ signal hit
 
 export var speed = 400
 var screen_size
-var target = Vector2()
+var target = null
 
 
 # Called when the node enters the scene tree for the first time.
@@ -21,10 +21,23 @@ func _input(event):
 
 func _process(delta):
   var velocity = Vector2()
+  
+  if Input.is_action_pressed("ui_right"):
+    velocity.x += 1
+    $AnimatedSprite.rotation = PI / 2
+  if Input.is_action_pressed("ui_left"):
+    velocity.x -= 1
+    $AnimatedSprite.rotation = -PI / 2
+  if Input.is_action_pressed("ui_down"):
+    velocity.y += 1
+    $AnimatedSprite.rotation = PI
+  if Input.is_action_pressed("ui_up"):
+    velocity.y -= 1
+    $AnimatedSprite.rotation = 0
 
   # If the player is far enough from the point in the screen where the user clicked or touched
   # add velocity to the player
-  if position.distance_to(target) > 10:
+  if target != null && position.distance_to(target) > 10:
     velocity = target - position
 
   if velocity.length() > 0:
@@ -39,8 +52,10 @@ func _process(delta):
 
   if velocity.length() > 0:
     $AnimatedSprite.animation = 'walk'
-    $AnimatedSprite.look_at(target)
-    $AnimatedSprite.rotate(PI / 2)
+    
+    if target != null:
+      $AnimatedSprite.look_at(target)
+      $AnimatedSprite.rotate(PI / 2)
   else:
     $AnimatedSprite.animation = 'up'
 
@@ -54,7 +69,7 @@ func _on_Player_body_entered(_body: Node):
 # Initialize the player
 func start(pos):
   position = pos
-  target = pos
+  #target = pos
   $AnimatedSprite.rotation_degrees = 0
   show()
   $CollisionShape2D.disabled = false
