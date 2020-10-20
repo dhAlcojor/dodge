@@ -51,5 +51,5 @@ func _on_ScoreTimer_timeout():
 
 
 func _on_StartTimer_timeout():
-  $MobTimer.start()
+  #$MobTimer.start()
   $ScoreTimer.start()
