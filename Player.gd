@@ -21,7 +21,7 @@ func _input(event):
 
 func _process(delta):
   var velocity = Vector2()
-  
+
   if Input.is_action_pressed("ui_right"):
     velocity.x += 1
     $AnimatedSprite.rotation = PI / 2
@@ -52,7 +52,7 @@ func _process(delta):
 
   if velocity.length() > 0:
     $AnimatedSprite.animation = 'walk'
-    
+
     if target != null:
       $AnimatedSprite.look_at(target)
       $AnimatedSprite.rotate(PI / 2)
